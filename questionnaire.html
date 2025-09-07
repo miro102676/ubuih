@@ -1,0 +1,474 @@
+ <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form - PROPAGANDA AGENCY</title>
+    <link rel="icon" type="image/x-icon" href="png.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-purple: #0f011a;
+            --deep-purple: #1a0529;
+            --medium-purple: #2d0b4d;
+            --accent-purple: #4a1b8c;
+            --vibrant-purple: #6a2cbe;
+            --light-purple: #8d5ee3;
+            --lighter-purple: #b392f0;
+            --neon-purple: #c0a3ff;
+            --text-color: #ffffff;
+            --light-text: #e2d9f3;
+            --gradient: linear-gradient(135deg, var(--vibrant-purple), var(--accent-purple));
+            --gradient-light: linear-gradient(135deg, var(--light-purple), var(--vibrant-purple));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-purple);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 27, 140, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 60%, rgba(106, 44, 190, 0.1) 0%, transparent 25%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .questionnaire-container {
+            background: rgba(45, 11, 77, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 0 50px rgba(142, 94, 227, 0.4);
+            border: 1px solid rgba(142, 94, 227, 0.3);
+        }
+        
+        .language-switcher {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .lang-btn {
+            background: rgba(45, 11, 77, 0.5);
+            border: 1px solid var(--light-purple);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .lang-btn.active {
+            background: var(--gradient);
+            box-shadow: 0 0 10px rgba(142, 94, 227, 0.5);
+        }
+        
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(142, 94, 227, 0.7);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: rgba(142, 94, 227, 0.2);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .question {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .question.active {
+            display: block;
+        }
+        
+        .question-text {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+            color: var(--lighter-purple);
+        }
+        
+        .answer-input {
+            width: 100%;
+            background: rgba(45, 11, 77, 0.5);
+            border: 1px solid var(--light-purple);
+            border-radius: 15px;
+            padding: 15px 20px;
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(142, 94, 227, 0.5);
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 100%;
+            background: var(--gradient);
+            color: var(--text-color);
+            border: none;
+            padding: 18px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 25px rgba(106, 44, 190, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(106, 44, 190, 0.8);
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 2s infinite;
+        }
+        
+        .thank-you-message {
+            text-align: center;
+            display: none;
+        }
+        
+        .thank-you-message h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--lighter-purple);
+            animation: pulse 2s infinite;
+        }
+        
+        .thank-you-message p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: var(--gradient);
+            color: var(--text-color);
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(106, 44, 190, 0.6);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .questionnaire-container {
+                padding: 30px 20px;
+            }
+            
+            .question-text {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="questionnaire-container">
+        <div class="language-switcher">
+            <button class="lang-btn active" data-lang="ru">RU</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div class="question active" id="question1">
+            <h2 class="question-text" data-lang-ru="Какие услуги тебя интересуют?" data-lang-en="What services are you interested in?">Какие услуги тебя интересуют?</h2>
+            <input type="text" class="answer-input" placeholder="Например: SMM, таргетированная реклама" id="answer1">
+            <button class="submit-btn" data-lang-ru="Далее" data-lang-en="Next" onclick="nextQuestion(1)">Далее</button>
+        </div>
+        
+        <div class="question" id="question2">
+            <h2 class="question-text" data-lang-ru="Ссылки на соцсети, которые хочешь продвигать (если уже есть)" data-lang-en="Links to social networks you want to promote (if any)">Ссылки на соцсети, которые хочешь продвигать (если уже есть)</h2>
+            <input type="text" class="answer-input" placeholder="Instagram, TikTok, YouTube" id="answer2">
+            <button class="submit-btn" data-lang-ru="Далее" data-lang-en="Next" onclick="nextQuestion(2)">Далее</button>
+        </div>
+        
+        <div class="question" id="question3">
+            <h2 class="question-text" data-lang-ru="Ссылка на твой телеграм для связи" data-lang-en="Your Telegram link for communication">Ссылка на твой телеграм для связи</h2>
+            <input type="text" class="answer-input" placeholder="@username или t.me/username" id="answer3">
+            <button class="submit-btn" data-lang-ru="Далее" data-lang-en="Next" onclick="nextQuestion(3)">Далее</button>
+        </div>
+        
+        <div class="question" id="question4">
+            <h2 class="question-text" data-lang-ru="Твоё имя" data-lang-en="Your name">Твоё имя</h2>
+            <input type="text" class="answer-input" placeholder="Как к вам обращаться?" id="answer4">
+            <button class="submit-btn" data-lang-ru="Отправить" data-lang-en="Submit" onclick="nextQuestion(4)">Отправить</button>
+        </div>
+        
+        <div class="thank-you-message" id="thankYou">
+            <h2 data-lang-ru="Симон скоро свяжется с тобой" data-lang-en="Simon will contact you soon">Симон скоро свяжется с тобой</h2>
+            <p data-lang-ru="Добро пожаловать в PROPAGANDA AGENCY" data-lang-en="Welcome to PROPAGANDA AGENCY">Добро пожаловать в PROPAGANDA AGENCY</p>
+            <a href="index.html" class="back-btn" data-lang-ru="Вернуться на главную" data-lang-en="Back to main page">Вернуться на главную</a>
+        </div>
+    </div>
+
+    <script>
+    const questions = document.querySelectorAll('.question');
+    const progress = document.getElementById('progress');
+    const totalQuestions = questions.length;
+    let currentQuestion = 0;
+    let currentLang = 'ru';
+    
+    // ВАШИ ДАННЫЕ JSONBIN
+    const JSON_BIN_ID = '68bddfe9ae596e708fe60a85';
+    const JSON_BIN_URL = `https://api.jsonbin.io/v3/b/${JSON_BIN_ID}`;
+    const JSON_BIN_MASTER_KEY = '$2a$10$ths0oosJv8jd1hmDCGMm4OZbG/8UP3icS21pVlysWJnhz/FurMyvi';
+    
+    // Инициализация переключателя языка
+    document.querySelectorAll('.lang-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            if (lang !== currentLang) {
+                currentLang = lang;
+                document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                changeLanguage(lang);
+                updatePlaceholders();
+            }
+        });
+    });
+    
+    // Обновление плейсхолдеров
+    function updatePlaceholders() {
+        document.getElementById('answer1').placeholder = currentLang === 'ru' ? 
+            'Например: SMM, таргетированная реклама' : 'For example: SMM, targeted advertising';
+        document.getElementById('answer2').placeholder = currentLang === 'ru' ? 
+            'Instagram, TikTok, YouTube' : 'Instagram, TikTok, YouTube';
+        document.getElementById('answer3').placeholder = currentLang === 'ru' ? 
+            '@username или t.me/username' : '@username or t.me/username';
+        document.getElementById('answer4').placeholder = currentLang === 'ru' ? 
+            'Как к вам обращаться?' : 'How should we address you?';
+    }
+    
+    // Смена языка
+    function changeLanguage(lang) {
+        document.querySelectorAll('[data-lang-ru], [data-lang-en]').forEach(element => {
+            if (element.hasAttribute(`data-lang-${lang}`)) {
+                const text = element.getAttribute(`data-lang-${lang}`);
+                if (text) {
+                    element.textContent = text;
+                }
+            }
+        });
+    }
+    
+    // Обновляем прогресс-бар
+    function updateProgress() {
+        const progressPercent = (currentQuestion / totalQuestions) * 100;
+        progress.style.width = `${progressPercent}%`;
+    }
+    
+    // Переход к следующему вопросу
+    function nextQuestion(questionNum) {
+        // Сохраняем ответ
+        const answerInput = document.getElementById(`answer${questionNum}`);
+        const answer = answerInput.value.trim();
+        
+        if (!answer) {
+            alert(currentLang === 'ru' ? 'Пожалуйста, ответьте на вопрос' : 'Please answer the question');
+            answerInput.focus();
+            return;
+        }
+        
+        // Переходим к следующему вопросу или завершаем
+        if (questionNum < totalQuestions) {
+            questions[currentQuestion].classList.remove('active');
+            currentQuestion++;
+            questions[currentQuestion].classList.add('active');
+            updateProgress();
+            
+            // Фокус на следующее поле ввода
+            setTimeout(() => {
+                const nextInput = document.getElementById(`answer${questionNum + 1}`);
+                if (nextInput) nextInput.focus();
+            }, 100);
+        } else {
+            // Все вопросы отвечены, сохраняем данные
+            saveApplicationData();
+            questions[currentQuestion].classList.remove('active');
+            document.getElementById('thankYou').style.display = 'block';
+        }
+    }
+    
+    // Сохранение данных анкеты
+    async function saveApplicationData() {
+        // Собираем все ответы
+        const applicationData = {
+            name: document.getElementById('answer4').value.trim(),
+            services: document.getElementById('answer1').value.trim(),
+            socialLinks: document.getElementById('answer2').value.trim(),
+            telegram: document.getElementById('answer3').value.trim(),
+            timestamp: new Date().toISOString(),
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            device: navigator.userAgent,
+            platform: navigator.platform,
+            language: currentLang,
+            userAgent: navigator.userAgent,
+            isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+        };
+        
+        console.log('Сохранение данных:', applicationData);
+        
+        // Сохраняем в localStorage
+        saveToLocalStorage(applicationData);
+        
+        // Пытаемся синхронизировать с облаком
+        try {
+            await syncToCloud(applicationData);
+        } catch (error) {
+            console.error('Ошибка синхронизации с облаком:', error);
+            // Не показываем ошибку пользователю, данные уже в localStorage
+        }
+        
+        // Показываем сообщение об успехе
+        showSuccessMessage();
+    }
+    
+    // Сохранение в localStorage
+    function saveToLocalStorage(applicationData) {
+        try {
+            const existingApplications = JSON.parse(localStorage.getItem('propaganda_applications') || '[]');
+            existingApplications.push(applicationData);
+            localStorage.setItem('propaganda_applications', JSON.stringify(existingApplications));
+            console.log('Данные сохранены в localStorage');
+        } catch (error) {
+            console.error('Ошибка сохранения в localStorage:', error);
+            alert(currentLang === 'ru' 
+                ? 'Ошибка сохранения данных. Пожалуйста, свяжитесь с нами напрямую.' 
+                : 'Error saving data. Please contact us directly.');
+        }
+    }
+    
+    // Синхронизация с облаком (JSONBin)
+    async function syncToCloud(applicationData) {
+        try {
+            // Получаем текущие данные из облака
+            const response = await fetch(JSON_BIN_URL + '/latest', {
+                headers: {
+                    'X-Master-Key': JSON_BIN_MASTER_KEY
+                }
+            });
+            
+            if (!response.ok) throw new Error('Ошибка получения данных из облака');
+            
+            const cloudData = await response.json();
+            const applications = cloudData.record?.applications || [];
+            
+            // Добавляем новую заявку
+            applications.push(applicationData);
+            
+            // Обновляем данные в облаке
+            const updateResponse = await fetch(JSON_BIN_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSON_BIN_MASTER_KEY
+                },
+                body: JSON.stringify({ applications })
+            });
+            
+            if (!updateResponse.ok) throw new Error('Ошибка обновления данных в облаке');
+            
+            console.log('Данные синхронизированы с облаком');
+        } catch (error) {
+            console.error('Ошибка синхронизации с облаком:', error);
+            throw error;
+        }
+    }
+    
+    // Показать сообщение об успехе
+    function showSuccessMessage() {
+        const thankYou = document.getElementById('thankYou');
+        thankYou.style.display = 'block';
+        thankYou.classList.add('fade-in');
+    }
+    
+    // Инициализация прогресс-бара
+    updateProgress();
+    
+    // Добавляем обработчики для клавиши Enter
+    document.querySelectorAll('.answer-input').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const questionNum = parseInt(this.id.replace('answer', ''));
+                nextQuestion(questionNum);
+            }
+        });
+    });
+    
+    // Устанавливаем плейсхолдеры при загрузке
+    updatePlaceholders();
+</script>
+</body>
+</html>
